@@ -9,6 +9,11 @@
 - 使用特定设备操作: `adb -s device_id`
   例如：`adb -s 47db0de20304 shell`
 
+  ## 连接设备
+  adb connect ip:端口号
+  ## 断开设备
+  adb disconnect ip:断开号
+
 ## 重启
 - 正常重启: `adb reboot`
 - 重启到 bootloader (刷机模式): `adb reboot bootloader`

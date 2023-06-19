@@ -1,0 +1,246 @@
+/*
+Gradle这个基于Groovy的DSL，
+DSL(Domain Specifc Language)意为领域特定语言，只用于某个特定的领域。
+我们只要按照Groovy的DSL语法来写，就可以轻松构建项目。
+task（任务）和action(动作)是Gradle的重要元素。
+下面的代码中，task代表一个独立的原子性操作，比如复制一个文件，编译一次Java代码，
+这里我们简单的定义一个名为hello的任务。doLast 代表task执行的最后一个action，
+通俗来讲就是task执行完毕后会回调doLast中的代码，在上面这个例子中就会打印 'Hello world!'
+ */
+// task hello {
+// 	doLast {
+// 		println 'Hello world!'
+// 		}
+// }
+
+//精简方式
+// task hello {
+//     println 'Hello world!'
+// }
+
+//创建task的三种方式
+//1.直接用任务名称创建
+// def Task hello=task(hello)
+// hello.doLast{
+//      println "hello world"
+// }
+
+//2.任务名称+任务配置创建
+// def Task hello=task(hello,group:BasePlugin.BUILD_GROUP)
+// hello.doLast{
+//      println "hello world"
+// }
+
+//3.TaskContainer的create方法创建。
+// tasks.create(name: 'hello') {
+//     println "hello world"
+// }
+
+//任务依赖 Hello world! go for it
+// task hello {
+//     println 'Hello world!'
+// }
+// task go(dependsOn: hello) {
+//     println "go for it"
+// }
+
+//动态定义任务 gradle -q task0
+/*
+这里用到了Groovy语法，
+times是Groovy在java.lang.Number中拓展的方法，是一个定时器。
+3.times中循环创建了三个新任务，隐式变量number的值为0，1，2，
+任务的名称由task加上number的值组成，达到了动态定义任务的目的。
+*/
+// 3.times {number -> 
+// 	task "task$number" {
+// 		println "task $number"
+// 	}
+
+// 任务的分组和描述 doLast 会最后执行
+// task hello {
+// 	group = 'build'
+// 	description = 'hello world'
+// 	doLast {
+// 		println "任务分组:${group}"
+// 		println "任务描述:${description}"
+// 	}
+// }
+// task go(dependsOn: hello) {
+// 	println "go for it"
+// }
+
+//获取任务帮助信息:gradle -q help --task hello
+
+
+//多任务调用 gradle helloWorld goForit
+// task helloWorld {
+//     println 'Hello world!'
+// }
+// task goForit {
+//     println "go for it"
+// }
+
+//也可以缩写:gradle hW gF 
+
+
+// task method {
+//     def abc = add (1,2)
+//     println abc //3
+//     minus 1,2 //1
+// }
+// int add(int a,int b) { 
+ 
+//  return a+b
+// }  
+// def minus(a,b) {//2 
+//  println a-b
+// }  
+
+// apply from: 'other.gradle'
+// task test{
+//     doLast{
+//         println "版本:${version}, 地址${url}"
+//     }
+// }
+
+// buildscript {
+//   repositories {
+//     maven {
+//       url "https://plugins.gradle.org/m2/"
+//     }
+//   }
+//   dependencies {
+//     classpath "com.jfrog.bintray.gradle:gradle-bintray-plugin:1.8.4"
+//   }
+// }
+// apply plugin: "com.jfrog.bintray"
+//  apply plugin: org.gradle.api.plugins.JavaPlugin  
+// apply plugin:CustomPl    ugin
+// class CustomPlugin implements Plugin<Project> {
+//     @Override
+//     void apply(Project project) {
+//         project.task('CustomPluginTask') {
+//             doLast {
+//                 println "自定义插件"
+//             }
+//         }
+//     }
+// }
+
+// tasks.register('hello') {
+//     doLast {
+//         println 'Hello world!'
+//     }
+// }
+
+// tasks.register('count') {
+//     doLast {
+//         4.times { print "$it " }
+//     }
+// }
+
+// tasks.register('hello') {
+//     doLast {
+//         println 'Hello world!'
+//     }
+// }
+// tasks.register('intro') {
+//     dependsOn hello
+//     doLast {
+//         println "I'm Gradle"
+//     }
+// }
+
+// 4.times { counter ->
+//     println "counter:$counter" 
+//     tasks.register("task$counter") {
+//         doLast {
+//             println "I'm task number $counter"
+//         }
+//     }
+// }
+
+// 4.times { counter ->
+//     tasks.register("task$counter") {
+//         doLast {
+//             println "I'm task number $counter"
+//         }
+//     }
+// }
+// tasks.named('task0') { dependsOn('task2', 'task3') }
+
+// tasks.register('hello') {
+//     doLast {
+//         println 'Hello Earth'
+//     }
+// }
+// tasks.named('hello') {
+//     doFirst {
+//         println 'Hello Venus'
+//     }
+// }
+// tasks.named('hello') {
+//     doLast {
+//         println 'Hello Mars'
+//     }
+// }
+// tasks.named('hello') {
+//     doLast {
+//         println 'Hello Jupiter'
+//     }
+// }
+
+// tasks.register('loadfile') {
+//     doLast {
+//         def files = file('./antLoadfileResources').listFiles().sort()
+//         files.each { File file ->
+//             if (file.isFile()) {
+//                 ant.loadfile(srcFile: file, property: file.name)
+//                 println " *** $file.name ***"
+//                 println "${ant.properties[file.name]}"
+//             }
+//         }
+//     }
+// }
+
+// tasks.register('checksum') {
+//     doLast {
+//         fileList('./antLoadfileResources').each { File file ->
+//             ant.checksum(file: file, property: "cs_$file.name")
+//             println "$file.name Checksum: ${ant.properties["cs_$file.name"]}"
+//         }
+//     }
+// }
+// tasks.register('loadfile') {
+//     doLast {
+//         fileList('./antLoadfileResources').each { File file ->
+//             ant.loadfile(srcFile: file, property: file.name)
+//             println "I'm fond of $file.name"
+//         }
+//     }
+// }
+
+// File[] fileList(String dir) {
+//     file(dir).listFiles({file -> file.isFile() } as FileFilter).sort()
+// }
+
+// defaultTasks 'clean', 'run'
+
+// tasks.register('clean') {
+//     doLast {
+//         println 'Default Cleaning!'
+//     }
+// }
+
+// tasks.register('run') {
+//     doLast {
+//         println 'Default Running!'
+//     }
+// }
+
+// tasks.register('other') {
+//     doLast {
+//         println "I'm not a default task!"
+//     }
+
+// }

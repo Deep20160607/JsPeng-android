@@ -1,0 +1,24 @@
+import org.apache.commons.codec.binary.Base64
+
+buildscript {
+    repositories {
+        mavenCentral()
+    }
+    dependencies {
+        classpath "commons-codec:commons-codec:1.2"
+    }
+}
+tasks.register('encode') {
+    doLast {
+          def byte[] encodedString = new Base64().encode('123'.getBytes())
+        println new String(encodedString)
+
+    }
+}
+tasks.register('decode') {
+    doLast {
+          def String encodedString = new Base64().decode('MTIz'.getBytes())
+        println new String(encodedString)
+
+    }
+}

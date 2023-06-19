@@ -1,0 +1,248 @@
+
+// tasks.withType(Tar).configureEach {
+//     enabled = false
+   
+// }
+
+/**把resources文件夹下的include包含的文件拷贝到target文件夹下 */
+// tasks.register('myCopy', Copy)
+// tasks.named('myCopy') {
+//     from 'resources'
+//     into 'target'
+//     include('**/*.txt', '**/*.xml', '**/*.properties')
+// }
+// tasks.register('myCopy', Copy) {
+//     from 'resources'
+//     zinto 'target'
+// }
+// def myCopy = tasks.named('myCopy')  {
+//     from 'resources'
+//     into 'target'
+// }
+
+// myCopy.configure {
+//     println "hhh"
+//     include('**/*.txt', '**/*.xml', '**/*.properties')
+// }
+
+// println tasks.named('myCopy').get().destinationDir
+
+
+// import javax.inject.Inject
+// abstract class CustomTask extends DefaultTask {
+//     final String message
+//     final int number
+
+//     @Inject
+//     CustomTask(String message, int number) {
+//         this.message = message
+//         this.number = number
+//     }
+// }
+
+// def taskX = tasks.register('taskX') {
+//     doLast {
+//         println 'taskX'
+//     }
+// }
+
+// def taskY = tasks.register('taskY') {
+//     doLast {
+//         println 'taskY'
+//     }
+// }
+
+// taskX.configure {
+//     dependsOn taskY
+// }
+
+// tasks.register('myTask', CustomTask, 'hello', 42)
+//  println tasks.named('myTask').get().number
+
+// def taskX = tasks.register('taskX') {
+//     doLast {
+//         println 'taskX'
+//     }
+// }
+// def taskY = tasks.register('taskY') {
+//     doLast {
+//         println 'taskY'
+//     }
+// }
+// def taskZ = tasks.register('taskZ') {
+//     doLast {
+//         println 'taskZ'
+//     }
+// }
+// taskX.configure { dependsOn(taskY) }
+// taskY.configure { dependsOn(taskZ) }
+// taskZ.configure { shouldRunAfter(taskX)}
+
+// def taskX = tasks.register('taskX') {
+//     doLast {
+//         println 'taskX'
+//     }
+// }
+
+// // Using a Gradle Provider
+// taskX.configure {
+//     dependsOn(provider {
+//         tasks.findAll { 
+//             task -> {
+//                 task.name.startsWith('lib')
+//             }
+//         }
+//     })
+// }
+
+// def printlns(name){
+//     println(name)
+// }
+
+// tasks.register('lib1') {
+//     doLast {
+//         println('lib1')
+//     }
+// }
+
+// tasks.register('lib2') {
+//     doLast {
+//         println('lib2')
+//     }
+// }
+
+// tasks.register('notALib') {
+//     doLast {
+//         println('notALib')
+//     }
+// }
+
+// def hello = tasks.register('hello') {
+//     doLast {
+//         println 'hello world'
+//     }
+// }
+
+// hello.configure {
+//     onlyIf { !project.hasProperty('skipHello') }
+// }
+
+// def compile = tasks.register('compile') {
+//     doLast {
+//         println 'We are doing the compile.'
+//     }
+// }
+
+// compile.configure {
+//     doFirst {
+//         // Here you would put arbitrary conditions in real life.
+//         if (true) {
+//             throw new StopExecutionException()
+//         }
+//     }
+// }
+// tasks.register('myTask') {
+//     dependsOn('compile')
+//     doLast {
+//         println 'I am not affected'
+//     }
+// }
+
+/**
+每个任务都有一个enabled默认为true. 将其设置为false阻止执行任何任务的操作。禁用的任务将被标记为已跳过 */
+// def disableMe = tasks.register('disableMe') {
+//     doLast {
+//         println 'This should not be printed if the task is disabled.'
+//     }
+// }
+
+// disableMe.configure {
+//     enabled = true
+// }
+
+/** 
+每个任务都有一个timeout属性，可以用来限制它的执行时间。当任务达到超时时，其任务执行线程将被中断。*/
+// tasks.register("hangingTask") {
+//     doLast {
+//         Thread.sleep(100000)
+//     }
+//     timeout = Duration.ofMillis(500)
+// }
+
+// def taskX = tasks.register('taskX') {
+//     doLast {
+//         println 'taskX'
+//     }
+// }
+// def taskY = tasks.register('taskY') {
+//     doLast {
+//         println 'taskY'
+//     }
+//     continue;
+// }
+// taskY.configure {
+//     mustRunAfter taskX
+//     // shouldRunAfter taskX
+// }
+
+// def copy = tasks.register('copy', Copy) {
+//    description 'Copies the resource directory to the target directory.'
+//    from 'resources'
+//    into 'target'
+//    include('**/*.txt', '**/*.xml', '**/*.properties')
+// }
+
+
+// plugins {
+//     id 'java-library'
+// }
+
+// ext {
+//     springVersion = "3.1.0.RELEASE"
+//     emailNotification = "build@master.org"
+// }
+
+// sourceSets.all { ext.purpose = null }
+
+// sourceSets {
+//     main {
+//         purpose = "production"
+//     }
+//     test {
+//         purpose = "test"
+//     }
+//     plugin {
+//         purpose = "production"
+//     }
+// }
+
+// tasks.register('printProperties') {
+//     doLast {
+//         println springVersion
+//         println emailNotification
+//         sourceSets.matching { it.purpose == "production" }.each { println it.name }
+//     }
+// }
+
+import java.text.FieldPosition
+
+tasks.register('configure') {
+    doLast {
+        def pos = configure(new FieldPosition(10)) {
+            beginIndex = 1
+            endIndex = 5
+        }
+        println pos.beginIndex
+        println pos.endIndex
+    }
+}
+
+apply plugin: 'java-library'
+tasks.register('testjava1') {
+    doLast {
+        def persion = src.main.Persion()
+        persion.name ="dp"
+        persion.age = 1
+        println "dp:" + persion.name
+    }
+}

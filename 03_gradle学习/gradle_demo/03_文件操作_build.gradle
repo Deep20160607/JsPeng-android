@@ -1,0 +1,16 @@
+def hello = tasks.register('hello') {
+    doLast {
+        println 'hello'
+    }
+}
+
+def copy = tasks.register('copy', Copy) {
+    from(file('src'))//./ 当前目录,或者直接写 file(文件夹)
+    into(file('build/src'))
+}
+// tasks.register('hello')
+// tasks.register('copy', Copy)
+
+println tasks.named('hello').get().name
+
+println tasks.named('copy').get().destinationDir
