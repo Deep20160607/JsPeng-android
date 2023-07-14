@@ -1,0 +1,67 @@
+ReentrantReadWriteLock
+
+ReentrantReadWriteLock 是 Java 中的一个可重入读写锁，它提供了对共享数据的读写访问控制。它是 Java 并发包 (java.util.concurrent) 中的一部分，旨在实现更高级别的并发控制。
+
+ReentrantReadWriteLock 通过将读锁和写锁分离，允许多个线程同时读取共享数据，但在写入数据时只允许一个线程进行访问。这种分离的访问控制策略可以提供更高的并发性和性能，适用于读操作频繁但写操作较少的场景。
+
+下面是一个简单的示例，展示了如何使用 ReentrantReadWriteLock：
+
+``` java
+import java.util.concurrent.locks.ReentrantReadWriteLock;
+
+class DataContainer {
+    private final ReentrantReadWriteLock lock = new ReentrantReadWriteLock();
+    private int data;
+
+    public int readData() {
+        lock.readLock().lock();
+        try {
+            return data;
+        } finally {
+            lock.readLock().unlock();
+        }
+    }
+
+    public void writeData(int newData) {
+        lock.writeLock().lock();
+        try {
+            data = newData;
+        } finally {
+            lock.writeLock().unlock();
+        }
+    }
+}
+
+public class Main {
+    public static void main(String[] args) {
+        DataContainer container = new DataContainer();
+
+        // 多个线程读取数据
+        for (int i = 0; i < 5; i++) {
+            new Thread(() -> {
+                int data = container.readData();
+                System.out.println("Read data: " + data);
+            }).start();
+        }
+
+        // 一个线程写入数据
+        new Thread(() -> {
+            int newData = 42;
+            container.writeData(newData);
+            System.out.println("Write data: " + newData);
+        }).start();
+    }
+}
+```
+
+在上述示例中，DataContainer 类封装了一个共享数据 data，并使用 ReentrantReadWriteLock 进行读写访问控制。readData 方法获取读锁并返回数据，而 writeData 方法获取写锁并更新数据。
+
+在 Main 类中，创建了一个 DataContainer 实例，并启动了多个读取数据的线程和一个写入数据的线程。读取数据的线程可以同时持有读锁进行读取操作，而写入数据的线程独占写锁进行写入操作。
+
+总结来说，ReentrantReadWriteLock 允许多个线程同时读取共享数据，但只允许一个线程进行写入操作。通过使用读写锁，可以在合适的场景下提高并发性和性能。
+
+
+
+
+
+
