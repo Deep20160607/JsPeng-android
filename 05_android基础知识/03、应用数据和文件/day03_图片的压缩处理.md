@@ -43,7 +43,7 @@ Matrix matrix = new Matrix();
 matrix.setScale(0.5f, 0.5f);
 bm = Bitmap.createBitmap(bitmap, 0, 0, bit.getWidth(), bit.getHeight(), matrix, true);
 ```
-具体操作: https://mp.csdn.net/mp_blog/creation/editor/78903818
+具体操作: https://blog.csdn.net/zizhan8723/article/details/78903818?spm=1001.2014.3001.5501
 
 ## png图片压缩原理
 PNG的全称叫便携式网络图型（Portable Network Graphics）是目前最流行的网络传输和展示的图片格式
